@@ -266,6 +266,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/09/05/作用域和闭包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/05/作用域和闭包/" class="post-title-link" itemprop="url">第一部分 作用域和闭包</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-05 15:37:14" itemprop="dateCreated datePublished" datetime="2019-09-05T15:37:14+08:00">2019-09-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>书中总结道，作用域是一套设计良好的，用来存储或访问变量的规则。对于JS来说，这套规则主要主要有以下几点：</p>
+<ol>
+<li>作用域嵌套（自下向上，逐级包含）</li>
+<li>函数作用域（可以理解为形成局部作用域的规则）</li>
+<li>块作用域（可以理解为形成局部作用域的规则）</li>
+<li>变量名（/函数名）提升</li>
+</ol>
+<p>最后，书中提到由作用域规则而构造的闭包。</p>
+<h3 id="第一章-作用域是什么"><a href="#第一章-作用域是什么" class="headerlink" title="第一章  作用域是什么"></a>第一章  作用域是什么</h3><p>这章扯到了编译原理，提到一般编译的三个步骤：词法分析、语法分析、代码生成。然后通过模拟对话的方式，简单阐述了引擎、编译器、作用域之间的关系。不过我个人觉得没啥卵用，无论是词法分析、语法分析或是代码生成，这些过程都是黑盒子，说破天在这本书里还是黑盒子。</p>
+<p>然后介绍了作用域嵌套，感觉这是一般编程语言都会有的作用域规则。</p>
+<h3 id="第二章-词法作用域"><a href="#第二章-词法作用域" class="headerlink" title="第二章  词法作用域"></a>第二章  词法作用域</h3><p>这里提到两种作用域的工作模型：词法作用域和动态作用域。大多数语言都使用的是词法作用域，JavaScript也是。</p>
+<p>词法作用域就是定义在词法阶段的作用域，即由你在写代码时将变量和块作用域写在哪里决定（平时可能感觉不到，但仔细一想的话，机器肯定是没有作用域的概念，是语言本身赋予的一种能力，或规则吧）。</p>
+<p>文中还提到了一些欺骗词法的手段，比如eval、with等。eval的功能是真的很强大，可以将字符串生成为js代码，with更像是处理对象属性的语法糖。这两个函数都不推荐使用。</p>
+<h3 id="第三章-函数作用域和块作用域"><a href="#第三章-函数作用域和块作用域" class="headerlink" title="第三章  函数作用域和块作用域"></a>第三章  函数作用域和块作用域</h3><p>函数可以隐藏内部实现，同事函数可以形成一个局部的作用域，从而规避冲突。</p>
+<p>这章还提到函数表达式，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>);  <span class="comment">// 3</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(a);  <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>函数表达式可以防止函数声明本身造成的命名污染。</p>
+<p>文中接着介绍了匿名和具名函数，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"我是匿名函数..."</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐这种写法</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"我的名字是Hello..."</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>书中推荐给函数表达式指定一个函数名，可以增强可读性。</p>
+<p>接着书中详细介绍了立即执行函数表达式，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写法一：</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">IIFE</span>(<span class="params"> global </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二：</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">IIFE</span>(<span class="params"> global </span>) </span>&#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line"> &#125;(<span class="built_in">window</span>));</span><br></pre></td></tr></table></figure>
+
+<p>参数还可以是函数或其他，可以根据需要更加灵活的使用。</p>
+<p>接着书中介绍了块作用域，其实函数也是块作用域的一种。JavaScript可以形成块作用的语法主要有以下几种：</p>
+<ol>
+<li>函数</li>
+<li>for循环</li>
+<li>if语句</li>
+<li>try/catch语句</li>
+</ol>
+<p>接着指出var声明的缺陷，从而（ES6）引出let、和const关键词。</p>
+<h3 id="第四章-（变量声明）提升"><a href="#第四章-（变量声明）提升" class="headerlink" title="第四章 （变量声明）提升"></a>第四章 （变量声明）提升</h3><p>每级作用域都会进行提升操作，函数声明会被提升，但是函数表达式却不会被提升（即使是具名的函数表达式）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">foo();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a);  <span class="comment">// undefined</span></span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a;</span><br><span class="line">  <span class="built_in">console</span>.log(a);  <span class="comment">// undefined</span></span><br><span class="line">  a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">foo();  <span class="comment">// TypeError  =&gt; undefined()</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">var</span> foo;</span><br><span class="line">foo();</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// var bar = ...self...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数声明和变量声明都会被提升，但是函数会首先被提升，尽管重复的var声明会被忽略掉，但出现在后面的函数声明还是可以覆盖前面的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">foo();  <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> foo;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">foo();</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结一下就是，变量（包括函数声明）的声明和赋值是两个操作，声明会首先被提升到本级作用域。</p>
+<h3 id="第五章-作用域闭包"><a href="#第五章-作用域闭包" class="headerlink" title="第五章 作用域闭包"></a>第五章 作用域闭包</h3><p>书中解释：当函数可以记住并且访问所在的词法作用域，即使函数是在当前词法作用域之外执行，这时就产生了闭包。<br>MDN（<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures</a> ）的解释：函数与对其状态即词法环境（lexical environment）的引用共同构成闭包（closure）。</p>
+<p>关键就是函数，以及函数所持有的局部作用域的引用。闭包可以说是js早期模块化不可缺少的核心。<br>书中提到的几个和闭包相关的关键点：</p>
+<ol>
+<li>回调函数和闭包：只要使用了回调函数，实际上就是在使用闭包</li>
+<li>块作用域和闭包：循环/if</li>
+<li>模块机制</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/09/02/股票计算器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -518,7 +659,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
