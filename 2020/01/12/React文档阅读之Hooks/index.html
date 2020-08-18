@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="mask-icon" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="简介Hooks是在16.8新增的功能，它们能够让你在没有Class的情况下使用state和其他React功能。 为什么要新增Hooks？ 组件之间难以共享状态逻辑(props + HOC，wrapper hell) 复杂组件难以理解（重复的逻辑，初始化/更新/卸载） JavaScript class机制对于人们造成的误解（this指向）  我该什么时候使用Hooks？ 如果你喜欢Hooks，可以在">
+<meta name="keywords" content="JavaScript,React,React文档阅读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React文档阅读之Hooks">
+<meta property="og:url" content="https://www.ftwof.xyz/2020/01/12/React文档阅读之Hooks/index.html">
+<meta property="og:site_name" content="Blog of iWuzhi">
+<meta property="og:description" content="简介Hooks是在16.8新增的功能，它们能够让你在没有Class的情况下使用state和其他React功能。 为什么要新增Hooks？ 组件之间难以共享状态逻辑(props + HOC，wrapper hell) 复杂组件难以理解（重复的逻辑，初始化/更新/卸载） JavaScript class机制对于人们造成的误解（this指向）  我该什么时候使用Hooks？ 如果你喜欢Hooks，可以在">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-17T13:49:35.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React文档阅读之Hooks">
+<meta name="twitter:description" content="简介Hooks是在16.8新增的功能，它们能够让你在没有Class的情况下使用state和其他React功能。 为什么要新增Hooks？ 组件之间难以共享状态逻辑(props + HOC，wrapper hell) 复杂组件难以理解（重复的逻辑，初始化/更新/卸载） JavaScript class机制对于人们造成的误解（this指向）  我该什么时候使用Hooks？ 如果你喜欢Hooks，可以在">
+  <link rel="canonical" href="https://www.ftwof.xyz/2020/01/12/React文档阅读之Hooks/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>React文档阅读之Hooks | Blog of iWuzhi</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog of iWuzhi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Win，or die.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-calculator">
+      
+    
+
+    <a href="/calculator/" rel="section"><i class="menu-item-icon fa fa-fw fa-calculator"></i> <br>股价计算器</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-knowledge">
+      
+    
+
+    <a href="/knowledge/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+    </div>
+</nav>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/iWuzhi" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2020/01/12/React文档阅读之Hooks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">React文档阅读之Hooks
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-12 17:25:11" itemprop="dateCreated datePublished" datetime="2020-01-12T17:25:11+08:00">2020-01-12</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Hooks是在16.8新增的功能，它们能够让你在没有Class的情况下使用state和其他React功能。</p>
+<h3 id="为什么要新增Hooks？"><a href="#为什么要新增Hooks？" class="headerlink" title="为什么要新增Hooks？"></a>为什么要新增Hooks？</h3><ol>
+<li>组件之间难以共享状态逻辑(props + HOC，wrapper hell)</li>
+<li>复杂组件难以理解（重复的逻辑，初始化/更新/卸载）</li>
+<li>JavaScript class机制对于人们造成的误解（this指向）</li>
+</ol>
+<h3 id="我该什么时候使用Hooks？"><a href="#我该什么时候使用Hooks？" class="headerlink" title="我该什么时候使用Hooks？"></a>我该什么时候使用Hooks？</h3><ol>
+<li>如果你喜欢Hooks，可以在新增的功能产品上使用Hooks</li>
+<li>不建议将以前的代码全部重写</li>
+</ol>
+<h3 id="Hooks概览"><a href="#Hooks概览" class="headerlink" title="Hooks概览"></a>Hooks概览</h3><ol>
+<li>State Hook: useState()</li>
+<li>Effect Hook: useEffect()</li>
+<li>Hooks规则：<ul>
+<li>只允许在函数顶层使用Hooks，不允许在条件、循环、内部函数里使用</li>
+<li>只允许在函数组件或自定义的Hooks里调用Hooks</li>
+<li>可以使用linter pluginl避免违反上面规则</li>
+</ul>
+</li>
+<li>创建你自己的Hooks(自定义Hooks)</li>
+<li>其他Hooks<ul>
+<li>useContext</li>
+<li>useReducer</li>
+</ul>
+</li>
+</ol>
+<h3 id="使用State-Hook（useState-干了什么？）"><a href="#使用State-Hook（useState-干了什么？）" class="headerlink" title="使用State Hook（useState()干了什么？）"></a>使用State Hook（useState()干了什么？）</h3><ol>
+<li>声明一个状态变量，这个变量会被React存储</li>
+<li>useState(‘hello’)，hello是该状态变量的默认值</li>
+<li>useState()返回一个数组，[state, setState]，state表示这个状态变量，setState用来更新这个状态变量</li>
+<li>可以通过多次调用useState()函数以声明多个状态变量</li>
+</ol>
+<h3 id="Effect-Hook（useEffect-干了什么？）"><a href="#Effect-Hook（useEffect-干了什么？）" class="headerlink" title="Effect Hook（useEffect()干了什么？）"></a>Effect Hook（useEffect()干了什么？）</h3><ol>
+<li>Effect Hook可以让你在函数组件里执行一些副作用的操作，比如数据获取、手动更新DOM等</li>
+<li>useEffect()会在每次render的时候都会重新调用(可能会有性能问题)</li>
+<li>useEffect()第二个参数可以用来控制是否在render的过程中重新执行</li>
+<li>可以在回调函数里返回一个卸载函数（就像componentWillUnmount）,不像class，这种返回函数的写法可以将某个逻辑中注册和清除的工作放在一起</li>
+<li>可以使用Effect Hook将逻辑分割成不同的自定义Hook，已达到代码分割及复用的目的</li>
+</ol>
+<h3 id="Hooks规则（为什么会有这些规则）"><a href="#Hooks规则（为什么会有这些规则）" class="headerlink" title="Hooks规则（为什么会有这些规则）"></a>Hooks规则（为什么会有这些规则）</h3><blockquote>
+<p>React依赖于Hooks的调用顺序</p>
+</blockquote>
+<p>我们在声明一个状态变量的时候，没有给定一个key或者其他的唯一标识。React会存储我们声明的状态变量，每次render之后，再次调用useState()会根据调用次序正确返回已存储的状态变量。</p>
+<h3 id="构建你自己的Hooks"><a href="#构建你自己的Hooks" class="headerlink" title="构建你自己的Hooks"></a>构建你自己的Hooks</h3><ol>
+<li>一个Hooks可以返回一个状态值（类似state），且这个值可变，而改变的逻辑就在定义这个Hooks的函数中</li>
+<li>一般自定义最底层的Hooks都会用到系统Hooks（useState、useEffect等）</li>
+<li>下面是<a href="http://jsfiddle.net/avbqfcm7/4/" target="_blank" rel="noopener">一个简单的例子</a>：</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; useState, useEffect &#125; = React;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">useTime</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> [time, setTime] = useState();</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  	setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    	setTime(<span class="built_in">Date</span>.now());</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> time;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyHooks</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">const</span> time = useTime();</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">  	&lt;h3&gt;&#123;time&#125;&lt;<span class="regexp">/h3&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">class TodoApp extends React.Component &#123;</span></span><br><span class="line"><span class="regexp">  render() &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">      &lt;div&gt;</span></span><br><span class="line"><span class="regexp">        &lt;MyHooks /</span>&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">ReactDOM.render(&lt;TodoApp /</span>&gt;, <span class="built_in">document</span>.querySelector(<span class="string">"#app"</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="Hooks-API引用"><a href="#Hooks-API引用" class="headerlink" title="Hooks API引用"></a>Hooks API引用</h3><ol>
+<li>基础Hooks<ul>
+<li>useState</li>
+<li>useEffect</li>
+<li>useContext</li>
+</ul>
+</li>
+<li>其它Hooks<ul>
+<li>useReducer</li>
+<li>useCallback</li>
+<li>useMemo</li>
+<li>useRef</li>
+<li>useImperativeHandle</li>
+<li>useLayoutEffect</li>
+<li>useDebugValue</li>
+</ul>
+</li>
+</ol>
+<h3 id="Hooks-FAQ"><a href="#Hooks-FAQ" class="headerlink" title="Hooks FAQ"></a>Hooks FAQ</h3><ul>
+<li>使用策略<ol>
+<li>版本：16.8</li>
+<li>当前Hooks并未覆盖所有的class场景，如getSnapshotBeforeUpdate、componentDidCatch生命周期，还有部分三方库可能不支持</li>
+<li>和Redux集成，React Redux since v7.1.0已经支持Hooks方式，之前版本可仍使用以前的方式</li>
+<li>静态类型：Flow和TypeScript React定义已经支持React Hooks</li>
+<li>测试使用Hooks的组件</li>
+<li>lint 规则强制做了哪些：<ol>
+<li>Hooks本身在一个函数组件或另一个Hooks里</li>
+<li>Hooks每次调用顺序不会变</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>从Classes到Hooks<ol>
+<li>生命周期映射</li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          
+            <a href="/tags/React/" rel="tag"><i class="fa fa-tag"></i> React</a>
+          
+            <a href="/tags/React文档阅读/" rel="tag"><i class="fa fa-tag"></i> React文档阅读</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2020/01/12/一周总结（2019-01-06-2020-01-12）/" rel="next" title="一周总结（2019-01-06~2020-01-12）">
+                <i class="fa fa-chevron-left"></i> 一周总结（2019-01-06~2020-01-12）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2020/01/18/git常用命令记录/" rel="prev" title="Git常用命令记录">
+                Git常用命令记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597"
+      alt="iWuzhi">
+  <p class="site-author-name" itemprop="name">iWuzhi</p>
+  <div class="site-description motion-element" itemprop="description">We think, we try, we finish.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/iWuzhi" title="GitHub &rarr; https://github.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:2461358597@qq.com" title="E-Mail &rarr; mailto:2461358597@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/u/6474587013" title="Weibo &rarr; https://weibo.com/u/6474587013" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/iWuzhi" title="Twitter &rarr; https://twitter.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iWuzhi</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

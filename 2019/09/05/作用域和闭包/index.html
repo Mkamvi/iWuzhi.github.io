@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="mask-icon" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="概述书中总结道，作用域是一套设计良好的，用来存储或访问变量的规则。对于JS来说，这套规则主要主要有以下几点：  作用域嵌套（自下向上，逐级包含） 函数作用域（可以理解为形成局部作用域的规则） 块作用域（可以理解为形成局部作用域的规则） 变量名（/函数名）提升  最后，书中提到由作用域规则而构造的闭包。 第一章  作用域是什么这章扯到了编译原理，提到一般编译的三个步骤：词法分析、语法分析、代码生成。">
+<meta name="keywords" content="前端,JavaScript,读书笔记,《你不知道的JavaScript》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一部分 作用域和闭包">
+<meta property="og:url" content="https://www.ftwof.xyz/2019/09/05/作用域和闭包/index.html">
+<meta property="og:site_name" content="Blog of iWuzhi">
+<meta property="og:description" content="概述书中总结道，作用域是一套设计良好的，用来存储或访问变量的规则。对于JS来说，这套规则主要主要有以下几点：  作用域嵌套（自下向上，逐级包含） 函数作用域（可以理解为形成局部作用域的规则） 块作用域（可以理解为形成局部作用域的规则） 变量名（/函数名）提升  最后，书中提到由作用域规则而构造的闭包。 第一章  作用域是什么这章扯到了编译原理，提到一般编译的三个步骤：词法分析、语法分析、代码生成。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-17T13:49:35.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第一部分 作用域和闭包">
+<meta name="twitter:description" content="概述书中总结道，作用域是一套设计良好的，用来存储或访问变量的规则。对于JS来说，这套规则主要主要有以下几点：  作用域嵌套（自下向上，逐级包含） 函数作用域（可以理解为形成局部作用域的规则） 块作用域（可以理解为形成局部作用域的规则） 变量名（/函数名）提升  最后，书中提到由作用域规则而构造的闭包。 第一章  作用域是什么这章扯到了编译原理，提到一般编译的三个步骤：词法分析、语法分析、代码生成。">
+  <link rel="canonical" href="https://www.ftwof.xyz/2019/09/05/作用域和闭包/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第一部分 作用域和闭包 | Blog of iWuzhi</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog of iWuzhi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Win，or die.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-calculator">
+      
+    
+
+    <a href="/calculator/" rel="section"><i class="menu-item-icon fa fa-fw fa-calculator"></i> <br>股价计算器</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-knowledge">
+      
+    
+
+    <a href="/knowledge/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+    </div>
+</nav>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/iWuzhi" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/09/05/作用域和闭包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">第一部分 作用域和闭包
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-05 15:37:14" itemprop="dateCreated datePublished" datetime="2019-09-05T15:37:14+08:00">2019-09-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>书中总结道，作用域是一套设计良好的，用来存储或访问变量的规则。对于JS来说，这套规则主要主要有以下几点：</p>
+<ol>
+<li>作用域嵌套（自下向上，逐级包含）</li>
+<li>函数作用域（可以理解为形成局部作用域的规则）</li>
+<li>块作用域（可以理解为形成局部作用域的规则）</li>
+<li>变量名（/函数名）提升</li>
+</ol>
+<p>最后，书中提到由作用域规则而构造的闭包。</p>
+<h3 id="第一章-作用域是什么"><a href="#第一章-作用域是什么" class="headerlink" title="第一章  作用域是什么"></a>第一章  作用域是什么</h3><p>这章扯到了编译原理，提到一般编译的三个步骤：词法分析、语法分析、代码生成。然后通过模拟对话的方式，简单阐述了引擎、编译器、作用域之间的关系。不过我个人觉得没啥卵用，无论是词法分析、语法分析或是代码生成，这些过程都是黑盒子，说破天在这本书里还是黑盒子。</p>
+<p>然后介绍了作用域嵌套，感觉这是一般编程语言都会有的作用域规则。</p>
+<h3 id="第二章-词法作用域"><a href="#第二章-词法作用域" class="headerlink" title="第二章  词法作用域"></a>第二章  词法作用域</h3><p>这里提到两种作用域的工作模型：词法作用域和动态作用域。大多数语言都使用的是词法作用域，JavaScript也是。</p>
+<p>词法作用域就是定义在词法阶段的作用域，即由你在写代码时将变量和块作用域写在哪里决定（平时可能感觉不到，但仔细一想的话，机器肯定是没有作用域的概念，是语言本身赋予的一种能力，或规则吧）。</p>
+<p>文中还提到了一些欺骗词法的手段，比如eval、with等。eval的功能是真的很强大，可以将字符串生成为js代码，with更像是处理对象属性的语法糖。这两个函数都不推荐使用。</p>
+<h3 id="第三章-函数作用域和块作用域"><a href="#第三章-函数作用域和块作用域" class="headerlink" title="第三章  函数作用域和块作用域"></a>第三章  函数作用域和块作用域</h3><p>函数可以隐藏内部实现，同事函数可以形成一个局部的作用域，从而规避冲突。</p>
+<p>这章还提到函数表达式，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>);  <span class="comment">// 3</span></span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(a);  <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>函数表达式可以防止函数声明本身造成的命名污染。</p>
+<p>文中接着介绍了匿名和具名函数，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"我是匿名函数..."</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐这种写法</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"我的名字是Hello..."</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>书中推荐给函数表达式指定一个函数名，可以增强可读性。</p>
+<p>接着书中详细介绍了立即执行函数表达式，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写法一：</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">IIFE</span>(<span class="params"> global </span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二：</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">IIFE</span>(<span class="params"> global </span>) </span>&#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line"> &#125;(<span class="built_in">window</span>));</span><br></pre></td></tr></table></figure>
+
+<p>参数还可以是函数或其他，可以根据需要更加灵活的使用。</p>
+<p>接着书中介绍了块作用域，其实函数也是块作用域的一种。JavaScript可以形成块作用的语法主要有以下几种：</p>
+<ol>
+<li>函数</li>
+<li>for循环</li>
+<li>if语句</li>
+<li>try/catch语句</li>
+</ol>
+<p>接着指出var声明的缺陷，从而（ES6）引出let、和const关键词。</p>
+<h3 id="第四章-（变量声明）提升"><a href="#第四章-（变量声明）提升" class="headerlink" title="第四章 （变量声明）提升"></a>第四章 （变量声明）提升</h3><p>每级作用域都会进行提升操作，函数声明会被提升，但是函数表达式却不会被提升（即使是具名的函数表达式）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">foo();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a);  <span class="comment">// undefined</span></span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a;</span><br><span class="line">  <span class="built_in">console</span>.log(a);  <span class="comment">// undefined</span></span><br><span class="line">  a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">foo();  <span class="comment">// TypeError  =&gt; undefined()</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">var</span> foo;</span><br><span class="line">foo();</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// var bar = ...self...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数声明和变量声明都会被提升，但是函数会首先被提升，尽管重复的var声明会被忽略掉，但出现在后面的函数声明还是可以覆盖前面的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">foo();  <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> foo;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">foo();</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结一下就是，变量（包括函数声明）的声明和赋值是两个操作，声明会首先被提升到本级作用域。</p>
+<h3 id="第五章-作用域闭包"><a href="#第五章-作用域闭包" class="headerlink" title="第五章 作用域闭包"></a>第五章 作用域闭包</h3><p>书中解释：当函数可以记住并且访问所在的词法作用域，即使函数是在当前词法作用域之外执行，这时就产生了闭包。<br>MDN（<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures</a> ）的解释：函数与对其状态即词法环境（lexical environment）的引用共同构成闭包（closure）。</p>
+<p>关键就是函数，以及函数所持有的局部作用域的引用。闭包可以说是js早期模块化不可缺少的核心。<br>书中提到的几个和闭包相关的关键点：</p>
+<ol>
+<li>回调函数和闭包：只要使用了回调函数，实际上就是在使用闭包</li>
+<li>块作用域和闭包：循环/if</li>
+<li>模块机制</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/前端/" rel="tag"><i class="fa fa-tag"></i> 前端</a>
+          
+            <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          
+            <a href="/tags/《你不知道的JavaScript》/" rel="tag"><i class="fa fa-tag"></i> 《你不知道的JavaScript》</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2019/09/02/股票计算器/" rel="next" title="股票计算器">
+                <i class="fa fa-chevron-left"></i> 股票计算器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2019/09/18/《CSS世界读书笔记》/" rel="prev" title="《CSS世界》读书笔记">
+                《CSS世界》读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597"
+      alt="iWuzhi">
+  <p class="site-author-name" itemprop="name">iWuzhi</p>
+  <div class="site-description motion-element" itemprop="description">We think, we try, we finish.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/iWuzhi" title="GitHub &rarr; https://github.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:2461358597@qq.com" title="E-Mail &rarr; mailto:2461358597@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/u/6474587013" title="Weibo &rarr; https://weibo.com/u/6474587013" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/iWuzhi" title="Twitter &rarr; https://twitter.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iWuzhi</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

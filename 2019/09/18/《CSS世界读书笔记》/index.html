@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0">
+  <link rel="mask-icon" href="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: 'search.xml'
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="第一章 概述本书中CSS世界特指CSS2.1。 这个世界的事情只要发生了，都是有原因的，CSS世界的出现也不例外。要想深入理解CSS属性的一些设计原因、表现原理，离不开当时的历史环境，CSS世界的诞生就是为图文信息展示服务的。 作者认为，（文档）”流”是影响整个CSS世界的一个重要因素，”流”是一种基本的定位和布局机制，可以形象描述成CSS世界中引导元素排列和定位的一条看不见的”水流”，当然”流”">
+<meta name="keywords" content="前端,读书笔记,CSS,《CSS世界》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《CSS世界》读书笔记">
+<meta property="og:url" content="https://www.ftwof.xyz/2019/09/18/《CSS世界读书笔记》/index.html">
+<meta property="og:site_name" content="Blog of iWuzhi">
+<meta property="og:description" content="第一章 概述本书中CSS世界特指CSS2.1。 这个世界的事情只要发生了，都是有原因的，CSS世界的出现也不例外。要想深入理解CSS属性的一些设计原因、表现原理，离不开当时的历史环境，CSS世界的诞生就是为图文信息展示服务的。 作者认为，（文档）”流”是影响整个CSS世界的一个重要因素，”流”是一种基本的定位和布局机制，可以形象描述成CSS世界中引导元素排列和定位的一条看不见的”水流”，当然”流”">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-17T13:49:35.137Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《CSS世界》读书笔记">
+<meta name="twitter:description" content="第一章 概述本书中CSS世界特指CSS2.1。 这个世界的事情只要发生了，都是有原因的，CSS世界的出现也不例外。要想深入理解CSS属性的一些设计原因、表现原理，离不开当时的历史环境，CSS世界的诞生就是为图文信息展示服务的。 作者认为，（文档）”流”是影响整个CSS世界的一个重要因素，”流”是一种基本的定位和布局机制，可以形象描述成CSS世界中引导元素排列和定位的一条看不见的”水流”，当然”流”">
+  <link rel="canonical" href="https://www.ftwof.xyz/2019/09/18/《CSS世界读书笔记》/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>《CSS世界》读书笔记 | Blog of iWuzhi</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog of iWuzhi</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Win，or die.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-calculator">
+      
+    
+
+    <a href="/calculator/" rel="section"><i class="menu-item-icon fa fa-fw fa-calculator"></i> <br>股价计算器</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-knowledge">
+      
+    
+
+    <a href="/knowledge/" rel="section"><i class="menu-item-icon fa fa-fw fa-book"></i> <br>知识体系</a>
+
+  </li>
+        <li class="menu-item menu-item-search">
+          <a href="javascript:;" class="popup-trigger">
+          
+            <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+    </div>
+</nav>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/iWuzhi" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/09/18/《CSS世界读书笔记》/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">《CSS世界》读书笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-18 16:15:51" itemprop="dateCreated datePublished" datetime="2019-09-18T16:15:51+08:00">2019-09-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="第一章-概述"><a href="#第一章-概述" class="headerlink" title="第一章 概述"></a>第一章 概述</h3><p>本书中CSS世界特指CSS2.1。</p>
+<p>这个世界的事情只要发生了，都是有原因的，CSS世界的出现也不例外。要想深入理解CSS属性的一些设计原因、表现原理，离不开当时的历史环境，CSS世界的诞生就是为图文信息展示服务的。</p>
+<p>作者认为，（文档）”流”是影响整个CSS世界的一个重要因素，”流”是一种基本的定位和布局机制，可以形象描述成CSS世界中引导元素排列和定位的一条看不见的”水流”，当然”流”可以被破坏（特殊布局），流向亦可以改变。</p>
+<h3 id="第二章-需提前了解的术语和概念"><a href="#第二章-需提前了解的术语和概念" class="headerlink" title="第二章 需提前了解的术语和概念"></a>第二章 需提前了解的术语和概念</h3><ol>
+<li>属性：CSS世界内置的固有属性，每个属性都有不同的作用，用来定制我们自己的页面</li>
+<li>值：一般包括以下类型（与属性值关系密切）<ul>
+<li>数值(z-index: 2)</li>
+<li>百分比(height: 30%)</li>
+<li>颜色值(red, #000)</li>
+</ul>
+</li>
+<li>关键字：CSS内置的一些固定值(transparent、solid、red等)</li>
+<li>变量（本书不做介绍）</li>
+<li>长度单位：<ul>
+<li>时间单位：s, ms</li>
+<li>角度单位：deg, rad</li>
+<li>长度单位: px, em</li>
+<li>其他：vh、vw等</li>
+</ul>
+</li>
+<li>功能符（css函数）：<ul>
+<li>rgba</li>
+<li>hsla</li>
+<li>calc</li>
+<li>url等</li>
+</ul>
+</li>
+<li>属性值：值 + 关键字 + 功能符</li>
+<li>声明：属性名 + 属性值</li>
+<li>声明块：花括号（{}）包裹的一系列声明</li>
+<li>规则或规则集：选择器 + 声明块</li>
+<li>选择器：瞄准目标元素的东西</li>
+<li>关系选择器：根据元素之间的关系选择元素的选择器</li>
+<li>@规则：以@字符开始的一些规则，像@media、@font-face、@page、@support</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: red;  <span class="comment">/* color是属性，red是值, red也是关键字(代表红颜色) */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="CSS世界中的”未定义行为”"><a href="#CSS世界中的”未定义行为”" class="headerlink" title="CSS世界中的”未定义行为”"></a>CSS世界中的”未定义行为”</h5><p>web标准未定义的行为表现，（甚至标准已定义的表现）各大浏览器厂商表现并不一致，默认样式不一致等。</p>
+<h3 id="第三章-流、元素与基本尺寸"><a href="#第三章-流、元素与基本尺寸" class="headerlink" title="第三章 流、元素与基本尺寸"></a>第三章 流、元素与基本尺寸</h3><p>width和height作用于content-box（当然可以凭借box-sizing更改），width: auto作用于不用类型的盒子（模型）上，会有不同的效果：充分利用可用空间(div)、收缩与包裹(span)、收缩到最小(table)、超出容器限制(white-space: nowrap)</p>
+<p><code>书中特技：</code></p>
+<ol>
+<li><p>在绝对定位模型中，默认情况元素的宽度表现是”包裹性”，宽度由内部尺寸决定，但是，当left/right或top/bottom对立方位的属性值同事存在的时候，元素的宽度表现为”格式化”宽度，如下可以间接设置宽度和高度（高度自适应100%）</p>
+<img style="width: 800px; margin: 0;" data-src="/images/1568877786779.jpg">
+</li>
+<li><p>一行文字居中，多行文字居左，其实就是用两个容器来控制，外面控制居中，里面控制居左，如下：</p>
+</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"out"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span>一些文字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.out</span> &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;  <span class="comment">/* 我能一行居中 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.inner</span> &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: left;  <span class="comment">/* 我能多行居左 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体实例：<a href="https://demo.cssworld.cn/3/2-5.php" target="_blank" rel="noopener">https://demo.cssworld.cn/3/2-5.php</a></p>
+<h5 id="首选最小宽度（指元素最适合的最小宽度）"><a href="#首选最小宽度（指元素最适合的最小宽度）" class="headerlink" title="首选最小宽度（指元素最适合的最小宽度）"></a>首选最小宽度（指元素最适合的最小宽度）</h5><img style="width: 400px; margin: 0;" data-src="/images/1568880343740.jpg">
+
+<p>容器将宽度设置为0，子元素的宽度并不为0，但会影响到布局，从布局的角度来看，子元素也的确是不见了(不占位置)。</p>
+<p><code>书中奇技淫巧：</code></p>
+<ol>
+<li><p>利用中英(连续英文单词不换行)文的最小宽度不同，可以构造类似凹凸的图形。<br>具体示例：<a href="https://demo.cssworld.cn/3/2-6.php" target="_blank" rel="noopener">https://demo.cssworld.cn/3/2-6.php</a></p>
+</li>
+<li><p>height: 100%：必须给与父元素固定高度或使用绝对定位。</p>
+</li>
+<li><p>实现子元素等高：子元素自动撑开父元素，父元素position设置为relative，其他子元素再设置position: absolute, height： 100%，可实现这些绝对定位的子元素与撑开父元素的子元素等高。如下：<br>具体示例：<a href="https://demo.cssworld.cn/3/2-12.php" target="_blank" rel="noopener">https://demo.cssworld.cn/3/2-12.php</a> </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.prev</span>, </span><br><span class="line"><span class="selector-class">.next</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50%</span>; <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">opacity</span>: .<span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.prev</span> &#123;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#cd0000</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.next</span> &#123;</span><br><span class="line">  <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#34538b</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用max-height做任意高度元素的展开收起动画</p>
+</li>
+<li><p>幽灵空白节点：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* &lt;div&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt; */</span></span><br><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: red;  <span class="comment">/* 这个DIV本来高度应该是0，但实际不是，可自测，和font-size，line-height相关 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="第四章-盒尺寸四大家族"><a href="#第四章-盒尺寸四大家族" class="headerlink" title="第四章 盒尺寸四大家族"></a>第四章 盒尺寸四大家族</h3><p>盒尺寸中的4个盒子，content、padding、border、marginß</p>
+<h5 id="4-1-content与替换元素"><a href="#4-1-content与替换元素" class="headerlink" title="4.1 content与替换元素"></a>4.1 content与替换元素</h5><ol>
+<li><p>替换元素使用content可以替换原有替换属性的值，具体示例：<a href="https://demo.cssworld.cn/4/1-4.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-4.php</a></p>
+</li>
+<li><p>普通元素也可添加content属性，值若设置为url()，那元素就会被替换，表现和img标签类似，具体示例：<a href="https://demo.cssworld.cn/4/1-5.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-5.php</a></p>
+</li>
+<li><p>content替换的只是视觉替换，比如替换图片后，无法保存content属性的图片</p>
+</li>
+</ol>
+<p><code>书中奇技淫巧：</code></p>
+<ol>
+<li><p>利用::before和::after实现两端对齐，具体示例：<a href="https://demo.cssworld.cn/4/1-7.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-7.php</a></p>
+</li>
+<li><p>配合@font-face规则实现图标字体效果，具体示例：<a href="https://demo.cssworld.cn/4/1-8.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-8.php</a></p>
+</li>
+<li><p>利用\A的换行特性，实现打点加载功能，具体示例：<a href="https://demo.cssworld.cn/4/1-9.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-9.php</a></p>
+</li>
+<li><p>content图片生成，具体示例：<a href="https://demo.cssworld.cn/4/1-10.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-10.php</a></p>
+</li>
+<li><p>content开启闭合符号生成，还可生成固定表单前缀，示例如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 生成固定闭合符号：书名号 */</span></span><br><span class="line"><span class="selector-tag">q</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">"《"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">q</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">"》"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 固定表单前缀，或其他类似功能 */</span></span><br><span class="line"><span class="selector-class">.form-item</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">"请输入："</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>content attr函数属性值内容生成</p>
+</li>
+<li><p>content计数器，counter-reset、counter-increment、counter()/counters()，可以像ul/ol一样制造序号，利用content的特性，结合content其他技术，可以更加灵活使用，具体示例：<a href="https://demo.cssworld.cn/4/1-11.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-11.php</a> ~ <a href="https://demo.cssworld.cn/4/1-19.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/1-19.php</a></p>
+</li>
+</ol>
+<h5 id="4-2-温和的padding属性（温和是指很少出现意外的情况）"><a href="#4-2-温和的padding属性（温和是指很少出现意外的情况）" class="headerlink" title="4.2 温和的padding属性（温和是指很少出现意外的情况）"></a>4.2 温和的padding属性（温和是指很少出现意外的情况）</h5><ol>
+<li>padding会影响元素的尺寸，会影响布局</li>
+<li>padding的百分比计算始终是相对于（父元素）宽度的</li>
+<li>各个浏览器下不同元素的默认paading值一般都不一样（即兼容问题，通常可引入一些初始化CSS文件，如normalize.css）<br><code>书中奇技淫巧：</code></li>
+<li>实现类菜单icon（我觉得关键还是background-clip: content-box;三条线分别是上border、中content、下border，然后利用background-clip将padding的背景色隐藏掉），具体示例：<a href="https://demo.cssworld.cn/4/2-4.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/2-4.php</a></li>
+<li>实现双圆点效果（这个原理和2差不多，就是加了border的一些特性），具体示例：<a href="https://demo.cssworld.cn/4/2-4.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/2-4.php</a></li>
+</ol>
+<h5 id="4-3-激进的margin属性"><a href="#4-3-激进的margin属性" class="headerlink" title="4.3 激进的margin属性"></a>4.3 激进的margin属性</h5><ol>
+<li>padding控制元素内边距，margin控制元素外边距</li>
+<li>元素尺寸：<ul>
+<li>margin尺寸：无对应DOM API</li>
+<li>border尺寸：offsetWidth/offsetHeight</li>
+<li>padding尺寸：clientWidth/clientHeight</li>
+<li>content尺寸：(style.width)</li>
+</ul>
+</li>
+<li>某些情况下，margin会影响到元素尺寸，具体示例：<a href="https://demo.cssworld.cn/4/3-1.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/3-1.php</a></li>
+<li>底部留白（有滚动条）不能用padding-bottom，有兼容问题（Firefox），使用margin的话留白部分没有滚动条，可多加个元素专门用作留白处理</li>
+<li>利用margin的负值可以扩大子元素相对于父元素的限制（非常使用于：整体左右padding固定，但是中间部分突出的布局）</li>
+<li>margin合并：块级元素的上下外边距有时会合并为单个外边距（合并的意义：如下图，考虑到h1标签的上下边距，若没有margin合并，则两个h1中间部分会是现在的2倍，这样想来，margin合并还是有点道理的）<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>world<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<img data-src="/images/1569319838971.jpg">
+
+<p><code>书中特技：</code></p>
+<ol>
+<li>实现等高布局：具体示例：<a href="https://demo.cssworld.cn/4/3-2.php，等高布局可百度搜索关键字：等高布局，我觉得比较靠谱的还是flex和table" target="_blank" rel="noopener">https://demo.cssworld.cn/4/3-2.php，等高布局可百度搜索关键字：等高布局，我觉得比较靠谱的还是flex和table</a></li>
+<li>利用margin实现左右上下对齐，具体示例：<a href="https://demo.cssworld.cn/4/3-5.php" target="_blank" rel="noopener">https://demo.cssworld.cn/4/3-5.php</a></li>
+</ol>
+<h5 id="4-4-功勋卓越的border属性"><a href="#4-4-功勋卓越的border属性" class="headerlink" title="4.4 功勋卓越的border属性"></a>4.4 功勋卓越的border属性</h5>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/前端/" rel="tag"><i class="fa fa-tag"></i> 前端</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          
+            <a href="/tags/CSS/" rel="tag"><i class="fa fa-tag"></i> CSS</a>
+          
+            <a href="/tags/《CSS世界》/" rel="tag"><i class="fa fa-tag"></i> 《CSS世界》</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2019/09/05/作用域和闭包/" rel="next" title="第一部分 作用域和闭包">
+                <i class="fa fa-chevron-left"></i> 第一部分 作用域和闭包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2019/10/22/技术总结（2017-8-2019-10）/" rel="prev" title="技术总结（2017-8~2019-10）">
+                技术总结（2017-8~2019-10） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597"
+      alt="iWuzhi">
+  <p class="site-author-name" itemprop="name">iWuzhi</p>
+  <div class="site-description motion-element" itemprop="description">We think, we try, we finish.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/iWuzhi" title="GitHub &rarr; https://github.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:2461358597@qq.com" title="E-Mail &rarr; mailto:2461358597@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/u/6474587013" title="Weibo &rarr; https://weibo.com/u/6474587013" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/iWuzhi" title="Twitter &rarr; https://twitter.com/iWuzhi" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iWuzhi</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
