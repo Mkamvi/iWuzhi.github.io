@@ -421,8 +421,8 @@
     <content type="text"><![CDATA[官方博客：https://babeljs.io/blog/Github：https://github.com/babel/babel官网：https://babeljs.io/stackoverflow：https://stackoverflow.com/questions/tagged/babeljstwitter：https://twitter.com/babeljs]]></content>
       <tags>
         <tag>前端</tag>
-        <tag>JavaScript</tag>
         <tag>Babel</tag>
+        <tag>JavaScript</tag>
         <tag>资讯</tag>
         <tag>前端资讯</tag>
       </tags>
@@ -433,8 +433,8 @@
     <content type="text"><![CDATA[一、背景我们知道，Babel是基于插件的，但要使用哪些插件，这个是取决于我们自己的需求的，我们可以通过配置文件的形式明确指定Babel使用哪些插件进行转换工作。 二、如何使用官网提供了多种不同的配置方式： babel.config.js 动态创建配置 .babelrc 静态配置 package.json#babel 同.babelrc .babelrc.js（推荐：基本可以满足大多数场景） 基本和.babelrc相同，但可以使用JavaScript 可以使用任何Node.js API去做一些额外的事情，如使用执行环境变量做动态的配置 使用命令号工具 @babel/cli 使用babel API @babel/core 三、核心配置 presetspresets是Babel的一系列预设插件组合，常用的有@babel/preset-env、@babel/preset-react，这些present都发布到了npm上，你也可以创建自己的preset来个性化定制plugin组合。 pluginsbabel是一个编译器（源代码 =&gt; 目标代码），它运行时执行三个步骤：解析（源代码）、（按规则）转化、生成（新代码）。每一个步骤都是由plugin来完成的，所以说babel是基于plugin的（和webpack的思想有点像）。这是官网列举的plugins列表。]]></content>
       <tags>
         <tag>前端</tag>
-        <tag>JavaScript</tag>
         <tag>Babel</tag>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -443,8 +443,8 @@
     <content type="text"><![CDATA[一、背景ES标准每年都会更新，但是用户使用的浏览器或者其他目标环境（如node），并不会及时作出响应或更新，然而每个新版本的新特性对于每个开发者而言，都有不少的诱惑，因为新特性一般都是为了解决旧版本的一些特定问题或者提升开发者的开发效率而被加入标准的。鉴于这种开发环境和实际应用环境不匹配的情况，有些会使用Polyfill一些库，有些则需要Hack代码，Babel正是为帮你做这些事情而产生的。 二、 什么是Babel？ Babel是一个可以将ECMAScript 2015+ 代码转化为低版本浏览器能支持的ES版本的工具链，或者将一些非ES标准的JS超集（如TS）转换为目标环境可识别的ES代码。 主要做以下这些事： 语法转换 Polyfill目标环境没有的一些功能 代码转换 其他（如JS扩展、jsx、或自定义插件） 三、如何使用 使用cli 使用API Nodejs环境中可以使用@babel/register或babel-node：原理是在require hook，在require加载之前将先使用babel进行编译 四、Babel是如何做到的？ 五、扩展Babel是基于插件的，所以并不一定要将Babel定义在ES规范的局限之下（当然产出肯定是ES标准没错了），只要你愿意，可以使用任意奇葩的插件，甚至自定义插件，用来转换你自定义的奇奇怪怪的代码。总之就是，每个插件可以将你相应类型或有相应格式的文本转化输出为你期望得到的目标代码。]]></content>
       <tags>
         <tag>前端</tag>
-        <tag>JavaScript</tag>
         <tag>Babel</tag>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
