@@ -266,6 +266,211 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2021/01/23/初探Amis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2021/01/23/初探Amis/" class="post-title-link" itemprop="url">初探Amis</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-01-23 09:31:45 / 修改时间：11:01:14" itemprop="dateCreated datePublished" datetime="2021-01-23T09:31:45+08:00">2021-01-23</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>最近公司内部做了一些比较大的调整，框架层也从自研转到了Amis。</p>
+<h3 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h3><p>Amis是百度出品的一款低代码框架，它使用 JSON 配置来生成页面，可以减少页面开发工作量，极大提升效率。</p>
+<ul>
+<li>What ?</li>
+<li>Why ?</li>
+<li>How ?<br>这几个问题可去官网看下介绍：<a href="https://baidu.gitee.io/amis/zh-CN/docs/index" target="_blank" rel="noopener">https://baidu.gitee.io/amis/zh-CN/docs/index</a></li>
+</ul>
+<h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><ol>
+<li><p>配置与组件</p>
+<ul>
+<li>Amis通过JSON配置构建组件树(和多数低代码框架一致，不过Amis的Schema更简单些)</li>
+<li>重要的是json type到React component的映射及数据传递<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;type&quot;: &quot;xxx&quot;,</span><br><span class="line">  ...其它属性</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>数据域与数据链</p>
+<ul>
+<li>数据域就是json节点上有个特殊的<strong>data</strong>属性，在配置其他属性是可以直接从data里取得数据</li>
+<li>可与后台协商直接通过接口板返回data数据做出更加灵活的配置</li>
+<li>数据链的设计应该是模仿JavaScript的原型链设计，就是data的取值可以延伸到父级，直到根节点<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">  &#123;</span><br><span class="line">  &quot;type&quot;: &quot;page&quot;,</span><br><span class="line">  &quot;data&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;zhangsan&quot;,</span><br><span class="line">    &quot;age&quot;: 20</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;body&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;type&quot;: &quot;tpl&quot;,</span><br><span class="line">      &quot;tpl&quot;: &quot;my name is $&#123;name&#125;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;type&quot;: &quot;service&quot;,</span><br><span class="line">      &quot;data&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;lisi&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;body&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;tpl&quot;,</span><br><span class="line">        &quot;tpl&quot;: &quot;my name is $&#123;name&#125;, I&apos;m $&#123;age&#125; years old&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>模板</p>
+<ul>
+<li>模板中可以嵌入数据域的数据、HTML、及一些js表达式</li>
+<li><strong>模板 + 数据域 + 数据链</strong> 可以产出非常灵活的Schema，这也是json配置满足大部分需求的基础</li>
+</ul>
+</li>
+<li><p>数据映射</p>
+<ul>
+<li>数据映射其实基本用到的就是模板取值能力，Amis额外添加了链式取值、过滤器等一些方便的操作</li>
+<li>除此之外，对于一些复杂的数据结构，Amis提供了<strong>&amp;</strong>用来展开对象、<strong>$</strong>用来提取数组</li>
+</ul>
+</li>
+<li><p>表达式</p>
+<ul>
+<li>这个表达式仅限于结果为Boolean类型，主要用于一些开关的控制</li>
+<li>如是否请求接口、是否展示，一般属性命名为xxxOn<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  &#123;</span><br><span class="line">  &quot;type&quot;: &quot;tpl&quot;,</span><br><span class="line">  &quot;tpl&quot;: &quot;当前作用域中变量 show 是 1 的时候才可以看得到我哦~&quot;,</span><br><span class="line">  &quot;visibleOn&quot;: &quot;this.show === 1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>联动</p>
+<ul>
+<li>联动指的是组件之间的行为交互及数据交换</li>
+<li>对于行为控制一般是使用表达式</li>
+<li>对于form的数据交互，一般使用target触发</li>
+</ul>
+</li>
+<li><p>行为</p>
+<ul>
+<li>Amis内置了一个Action控件，可以接受各种事件</li>
+<li>包括ajax、表单提交、弹出Dialog…<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  &#123;</span><br><span class="line">  &quot;type&quot;: &quot;page&quot;,</span><br><span class="line">  &quot;body&quot;: &#123;</span><br><span class="line">    &quot;type&quot;: &quot;action&quot;,</span><br><span class="line">    &quot;label&quot;: &quot;发出一个请求&quot;,</span><br><span class="line">    &quot;actionType&quot;: &quot;ajax&quot;,</span><br><span class="line">    &quot;api&quot;: &quot;https://3xsw4ap8wah59.cfc-execute.bj.baidubce.com/api/amis-mock/mock2/form/saveForm&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>样式</p>
+<ul>
+<li>Amis中的样式主要还是通过className去自定义</li>
+<li>也提供了一些方便的class集合供我们快速使用(旧)</li>
+<li>后面辅助class精简了tailwindcss并提供了一些Css变量</li>
+</ul>
+</li>
+</ol>
+<h3 id="核心类型"><a href="#核心类型" class="headerlink" title="核心类型"></a>核心类型</h3><ol>
+<li>SchemaNode<ul>
+<li>每一个SchemaNode对应到React其实就是一个真实的Component</li>
+<li>由大量SchemaNode构成的json结构其实就是一个React组件树</li>
+</ul>
+</li>
+<li>API<ul>
+<li>Amis为了更加灵活的json配置，提供API直接可以将后台的数据融合到SchemaNode的数据域(data)中</li>
+</ul>
+</li>
+<li>Definitions<ul>
+<li>类似一些框架中的Mix，定义一些公用的SchemaNode</li>
+<li>其他地方可直接引用</li>
+</ul>
+</li>
+</ol>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p><a href="https://baidu.gitee.io/amis/zh-CN/docs/components/component" target="_blank" rel="noopener">https://baidu.gitee.io/amis/zh-CN/docs/components/component</a></p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>amis 的渲染过程是将 json 转成对应的 React 组件。先通过 json 的 type 找到对应的 Component 然后，然后把其他属性作为 props 传递过去完成渲染，具体：<br>首先是向Amis注册React组件(@Renderer || @FormItem)，注册好组件池之后，Amis便能从json的type信息及相关path定义找到对应的组件并渲染。</p>
+<ol>
+<li><p>组件注册</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@Renderer(&#123;</span><br><span class="line">  test: <span class="regexp">/(^|\/)form$/</span></span><br><span class="line">  <span class="comment">// ... 其他信息隐藏了</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">FormRenderer</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ... 其他信息隐藏了</span></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      title,</span><br><span class="line">      controls,</span><br><span class="line">      render <span class="comment">// 用来渲染孩子节点，如果当前是叶子节点则可以忽略。</span></span><br><span class="line">    &#125; = <span class="keyword">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;form className=<span class="string">"form"</span>&gt;</span><br><span class="line">        &#123;controls.map(<span class="function">(<span class="params">control, index</span>) =&gt;</span> (</span><br><span class="line">          &lt;div className=<span class="string">"form-item"</span> key=&#123;index&#125;&gt;</span><br><span class="line">            &#123;render(<span class="string">`<span class="subst">$&#123;index&#125;</span>/control`</span>, control)&#125;</span><br><span class="line">          &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        ))&#125;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>form&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写Schema</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"type"</span>: <span class="string">"page"</span>,</span><br><span class="line">  <span class="attr">"title"</span>: <span class="string">"页面标题"</span>,</span><br><span class="line">  <span class="attr">"subTitle"</span>: <span class="string">"副标题"</span>,</span><br><span class="line">  <span class="attr">"body"</span>: &#123;</span><br><span class="line">    <span class="attr">"type"</span>: <span class="string">"form"</span>,</span><br><span class="line">    <span class="attr">"title"</span>: <span class="string">"用户登录"</span>,</span><br><span class="line">    <span class="attr">"controls"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"username"</span>,</span><br><span class="line">        <span class="attr">"label"</span>: <span class="string">"用户名"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>真实渲染</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;Page title=<span class="string">"页面标题"</span> subTitle=<span class="string">"副标题"</span>&gt;</span><br><span class="line">  &lt;Form</span><br><span class="line">    title=<span class="string">"用户登录"</span></span><br><span class="line">    controls=&#123;[</span><br><span class="line">      &#123;</span><br><span class="line">        type: <span class="string">'text'</span>,</span><br><span class="line">        name: <span class="string">'username'</span>,</span><br><span class="line">        label: <span class="string">'用户名'</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]&#125;</span><br><span class="line">  /&gt;</span><br><span class="line">&lt;<span class="regexp">/Page&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><ol>
+<li><p>自定义组件<br>Amis提供了两种方式来使用，SDK + React，SDK的方式就忽略了，SDK方式主要是暴露给用户做一些简单的扩展。自己用的时候基本表都是集成React来用。为了满足更加复杂的需求，Amis除了内置的一些组件外，还支持我们自定义组件，然后注册到Amis组件池中供我们在json中配置使用。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FormItem&#125; <span class="keyword">from</span> <span class="string">'amis'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> cx <span class="keyword">from</span> <span class="string">'classnames'</span>;</span><br><span class="line"></span><br><span class="line">@FormItem(&#123;</span><br><span class="line">  type: <span class="string">'custom-checkbox'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomCheckbox</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  validate() &#123;</span><br><span class="line">    <span class="comment">// 通过 this.props.value 可以知道当前值。</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> isValid ? <span class="string">''</span> : <span class="string">'不合法，说明不合法原因。'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ... 其他省略了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>扩展Amis内置组件</p>
+</li>
+</ol>
+<h3 id="端上定制"><a href="#端上定制" class="headerlink" title="端上定制"></a>端上定制</h3><ol>
+<li>通过特定结点属性(mobile)</li>
+<li>通过class特定前缀(m:)</li>
+</ol>
+<h3 id="多语言"><a href="#多语言" class="headerlink" title="多语言"></a>多语言</h3><ol>
+<li>内置中文 + 英文</li>
+<li>扩展，参照英文扩展</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>简单：Schema配置足够简单。</li>
+<li>灵活：数据域、数据链、模板提供灵活的配置</li>
+<li>扩展能力强：自定义组件，能满足各种需求【但也和low code背道而驰】</li>
+</ol>
+<p>在实际的开发过程中，也的确遇到了很多问题：</p>
+<ol>
+<li>社区用户少</li>
+<li>文档不完善</li>
+<li>框架本身还不够成熟（开源、面向客户的产品）</li>
+<li>以及面对复杂的业务场景，内置的一些组件组合无法满足需求，需要做大量的Hack或适配开发</li>
+</ol>
+<p>好在Amis的设计不是特别复杂，源码阅读基本无障碍，所以也很快能基于源码的设计给出一些解决方案，不至于一些业务能力无法实现。</p>
+
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2020/08/19/记录下正则表达式实战/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1308,112 +1513,6 @@
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2020/04/06/简记-2020-04-06/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="iWuzhi">
-      <meta itemprop="description" content="We think, we try, we finish.">
-      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog of iWuzhi">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/04/06/简记-2020-04-06/" class="post-title-link" itemprop="url">简记-2020-04-06</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-04-06 19:28:33" itemprop="dateCreated datePublished" datetime="2020-04-06T19:28:33+08:00">2020-04-06</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <ol>
-<li>Symbol.hasInstance自定义instanceof操作</li>
-<li>Babel Class 转ES5实现<ul>
-<li>箭头函数被定义为对象(实例)本身的属性</li>
-<li>非箭头函数被定义在构造函数的原型</li>
-</ul>
-</li>
-<li>React this 丢失问题：<a href="https://reactjs.org/docs/faq-functions.html#why-is-binding-necessary-at-all" target="_blank" rel="noopener">https://reactjs.org/docs/faq-functions.html#why-is-binding-necessary-at-all</a><ul>
-<li>事件处理时丢失</li>
-<li>props传递时丢失</li>
-</ul>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1454,7 +1553,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1595,7 +1694,9 @@
         
           
         
-        <span class="site-state-item-count">63</span>
+          
+        
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1663,7 +1764,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

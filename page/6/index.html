@@ -266,6 +266,117 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/12/12/React15拾荒记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="iWuzhi">
+      <meta itemprop="description" content="We think, we try, we finish.">
+      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of iWuzhi">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/12/12/React15拾荒记/" class="post-title-link" itemprop="url">React_v15-拾荒记</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-12 11:39:54" itemprop="dateCreated datePublished" datetime="2019-12-12T11:39:54+08:00">2019-12-12</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <h3 id="jsx"><a href="#jsx" class="headerlink" title="jsx"></a>jsx</h3><blockquote>
+<p>jsx是React.createElement(component, props, …children)函数的一个语法糖，需要babel插件（preset-react）做转换。</p>
+</blockquote>
+<p>需要注意的点：</p>
+<ol>
+<li>React必须在当前作用域</li>
+<li>自定义组件必须首字母大写</li>
+<li>可以使用点标记(如：MyComponent.HeaderComponent)</li>
+<li>Booleans、Null、和Undefined会被忽略(可以使用String(undefined/false/null))</li>
+<li>属性值默认为true</li>
+</ol>
+<h3 id="setState-函数"><a href="#setState-函数" class="headerlink" title="setState()函数"></a>setState()函数</h3><p>setState函数有时是异步执行的，处于对性能的考虑，React有时会将多个setState操作合并成一个更新操作。</p>
+<p>当你调用setState函数时，React会将需要更新的state与原state进行合并(merge)，合并的过程是浅拷贝。</p>
+<h3 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h3><p>this指向问题，使用箭头函数或bind</p>
+<p><strong>为什么：</strong> js的class机制</p>
+<h3 id="list和key"><a href="#list和key" class="headerlink" title="list和key"></a>list和key</h3><p>diff算法</p>
+<h3 id="表单处理"><a href="#表单处理" class="headerlink" title="表单处理"></a>表单处理</h3><p>受控组件和非受控组件</p>
+<h3 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h3><p>注意渲染的条件必须返回boolean值，如：</p>
+<figure class="highlight jsx"><figcaption><span>harmony</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &lt;h3&gt;你好啊$&#123; 0 &amp;&amp; "我很好"&#125;&lt;/h3&gt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 显示会将0也显示出来</span></span><br><span class="line"><span class="comment">// 因为：Booleans, Null, and Undefined Are Ignored</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/12/11/markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1358,160 +1469,6 @@
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ftwof.xyz/2019/10/22/技术总结（2017-8-2019-10）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="iWuzhi">
-      <meta itemprop="description" content="We think, we try, we finish.">
-      <meta itemprop="image" content="https://q1.qlogo.cn/g?b=qq&s=100&nk=2461358597">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog of iWuzhi">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/10/22/技术总结（2017-8-2019-10）/" class="post-title-link" itemprop="url">技术总结（2017-8~2019-10）</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-22 11:02:14" itemprop="dateCreated datePublished" datetime="2019-10-22T11:02:14+08:00">2019-10-22</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-08-17 21:49:35" itemprop="dateModified" datetime="2020-08-17T21:49:35+08:00">2020-08-17</time>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p>这两年主线Web，然后周边杂七杂八的副本也刷了不少，这里把用过的所有东西都列出来，方便之后整理吧。</p>
-<h3 id="核心基础技术"><a href="#核心基础技术" class="headerlink" title="核心基础技术"></a>核心基础技术</h3><ol>
-<li>html</li>
-<li>css</li>
-<li>javascript</li>
-</ol>
-<h3 id="核心基础技术扩展"><a href="#核心基础技术扩展" class="headerlink" title="核心基础技术扩展"></a>核心基础技术扩展</h3><ol>
-<li>css技术扩展：less, sass/scss, postcss, style-components, css-module</li>
-<li>javascript扩展：TypeScript</li>
-</ol>
-<h3 id="React全套"><a href="#React全套" class="headerlink" title="React全套"></a>React全套</h3><ol>
-<li>react</li>
-<li>react-dom</li>
-<li>react-router</li>
-<li>react-router-dom</li>
-<li>react-loadable</li>
-</ol>
-<h3 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h3><ol>
-<li>npm(cnpm, npx)</li>
-<li>yarn</li>
-</ol>
-<h3 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h3><ol>
-<li>Webpack</li>
-<li>Parcel</li>
-<li>Rollup</li>
-</ol>
-<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3><ol>
-<li>redux：redux-saga，redux-thunk</li>
-<li>mobx</li>
-</ol>
-<h3 id="类型检查"><a href="#类型检查" class="headerlink" title="类型检查"></a>类型检查</h3><ol>
-<li>PropTypes</li>
-<li>Flow</li>
-</ol>
-<h3 id="API规范"><a href="#API规范" class="headerlink" title="API规范"></a>API规范</h3><ol>
-<li>REST</li>
-<li>GraphQL</li>
-</ol>
-<h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><ol>
-<li>lodash</li>
-<li>moment</li>
-<li>classnames</li>
-<li>numerial</li>
-<li>RxJS</li>
-<li>Ramda</li>
-</ol>
-<h3 id="测试框架（接触的有点少，真得找个机会好好体会一下了）"><a href="#测试框架（接触的有点少，真得找个机会好好体会一下了）" class="headerlink" title="测试框架（接触的有点少，真得找个机会好好体会一下了）"></a>测试框架（接触的有点少，真得找个机会好好体会一下了）</h3><ol>
-<li>Mocha</li>
-<li>Jest</li>
-<li>Chai </li>
-</ol>
-<h3 id="静态文档生成"><a href="#静态文档生成" class="headerlink" title="静态文档生成"></a>静态文档生成</h3><ol>
-<li>docz: 基于Gatsby</li>
-<li>Gatsby</li>
-<li>storybook</li>
-</ol>
-<h3 id="桌面开发"><a href="#桌面开发" class="headerlink" title="桌面开发"></a>桌面开发</h3><ol>
-<li>Electron</li>
-</ol>
-<p>husky<br>代码美化，格式化<br>react-styleguidist<br>source-map-explorer<br>graphql<br>dotenv<br>dotenv-expand<br>semver</p>
-<p>http协议<br>计算机网络</p>
-
-          
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1552,7 +1509,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1693,7 +1650,9 @@
         
           
         
-        <span class="site-state-item-count">63</span>
+          
+        
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1761,7 +1720,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
